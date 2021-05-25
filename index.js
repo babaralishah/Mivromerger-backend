@@ -1,18 +1,28 @@
-const UsersRoutes = require('./app/routes/user.router');
 const express = require('express');
-const bodyParser = require('body-parser');
 const app = express();
+const http = require('http');
+const server = http.createServer(app);
+require('dotenv').config();
 var mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
-const jsonwebtoken = require('jsonwebtoken');
+const cors = require('cors');
+const bodyParser = require('body-parser');
 app.use(
     bodyParser.urlencoded({
         extended: true,
     })
 );
 app.use(bodyParser.json());
-const cors = require('cors');
-mongoose.connect('mongodb://localhost:27017/myfirstmongodb', { useNewUrlParser: true, useUnifiedTopology: true });
+
+const UsersRoutes = require('./app/routes/user.router');
+const bcrypt = require('bcryptjs');
+const jsonwebtoken = require('jsonwebtoken');
+
+const mongoCon = process.env.mongoCon;
+// mongodb+srv://dbadmin:admin123456@cluster0.eznhs.mongodb.net/test
+// mongoose.connect('mongodb://localhost:27017/myfirstmongodb', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb+srv://dbadmin:admin123456@cluster0.eznhs.mongodb.net/test', { useNewUrlParser: true, useUnifiedTopology: true });
+// mongoose.connect(mongoCon, { useNewUrlParser: true, useUnifiedTopology: true });
+
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/users", UsersRoutes);
