@@ -31,7 +31,7 @@ const mongoCon = process.env.mongoCon;
 // mongodb+srv://dbadmin:admin123456@cluster0.eznhs.mongodb.net/test
 // mongoose.connect('mongodb://localhost:27017/myfirstmongodb', { useNewUrlParser: true, useUnifiedTopology: true });
 // mongoose.connect('mongodb+srv://dbadmin:admin123456@cluster0.eznhs.mongodb.net/test', { useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.connect(mongoCon, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(mongoCon, { useNewUrlParser: true});
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
