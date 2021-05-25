@@ -1,3 +1,4 @@
+
 const dotenv = require("dotenv");
 
 dotenv.config();
@@ -7,6 +8,11 @@ const http = require('http');
 const server = http.createServer(app);
 require('dotenv').config();
 var mongoose = require('mongoose');
+
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
+
 const cors = require('cors');
 const bodyParser = require('body-parser');
 app.use(
