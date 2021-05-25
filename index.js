@@ -43,6 +43,6 @@ app.use("/users", UsersRoutes);
 app.get('*', (req, res) => {
     res.send('Page Doesnot exists');
 });
-app.listen(3000, () => {
+app.listen(process.env.port, () => {
     console.log('Express application running on localhost:3000');
 });
