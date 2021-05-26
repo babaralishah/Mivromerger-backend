@@ -120,7 +120,7 @@ async function runUpdate(_id, updates, res) {
             } else {
                 res.status(422).send({
                     code: 422,
-                    message: 'Unprocessible Entity'
+                    message: 'Unprocessible Entity, This could be because you have not made any changes'
                 });
             }
         }
