@@ -59,9 +59,21 @@ usersController.registerUser = async (req, res) => {
         const user = new Users(body);
         const result = await user.save();
 
+        console.log(req.body.email);
+        const findUser = await User.findOne({ email: req.body.email });
+        console.log("Email exist in database:", findUser);
+        if (findUser) {
+            console.log("Email exist in database:", findUser);
+            res.status(404).json({
+                success: false,
+                status: "Email already in use, try with another email!",
+            });
+        }
+
         res.send({
             message: 'Signup successful'
         });
+
     }
     catch (ex) {
         console.log('ex', ex)
