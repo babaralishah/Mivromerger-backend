@@ -164,7 +164,7 @@ usersController.loginUser = async (req, res) => {
         if (!result) {
             // this means result is null
             res.status(401).send({
-                Error: 'This user does not exists. Please signup first'
+                message: 'This user does not exists. Please signup first'
             });
         } else {
             if (bcrypt.compareSync(body.password, result.password)) {
@@ -182,7 +182,7 @@ usersController.loginUser = async (req, res) => {
             else {
                 console.log('password doesnot match');
 
-                res.status(401).send({ message: 'Wrong Password' });
+                res.status(401).send({ message: 'Wrong Password Entered' });
             }
         }
     } catch (ex) {
