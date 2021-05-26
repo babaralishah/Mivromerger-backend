@@ -55,13 +55,13 @@ usersController.registerUser = async (req, res) => {
         var hash = bcrypt.hashSync(password, salt);
 
         body.password = hash;
-        console.log('hash - > ', hash);
         const user = new Users(body);
         const result = await user.save();
 
-        console.log(req.body.email);
+        // console.log(req.body.email);
+        console.log('\n\n \n hash - > ', hash);
         const findUser = await User.findOne({ email: req.body.email });
-        console.log("Email exist in database:", findUser);
+        console.log("\n\n\nEmail exist in database:\n\n\n", findUser);
         if (findUser) {
             console.log("Email exist in database:", findUser);
             res.status(404).json({
@@ -69,19 +69,28 @@ usersController.registerUser = async (req, res) => {
                 status: "Email already in use, try with another email!",
             });
         }
-
-        res.send({
-            message: 'Signup successful'
-        });
+        else {
+            res.send({
+                message: 'Signup successful'
+            });
+        }
 
     }
     catch (ex) {
-        console.log('ex', ex)
+        console.log('\n\n\nex', ex.code)
 
-        res.send({
-            message: 'Error',
-            detail: ex
-        }).status(500);
+        if (ex.code === 11000) {
+            res.send({
+                message: 'Email already in use, try with another email!',
+                detail: ex
+            }).status(500);
+        }
+        else {
+            res.send({
+                message: 'Error here',
+                detail: ex
+            }).status(500);
+        }
     }
 };
 
