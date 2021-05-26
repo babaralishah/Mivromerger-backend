@@ -1,5 +1,6 @@
 const usersController = {};
 const Users = require('../models/user.model');
+const User = require('../models/user.model');
 
 const path = require('path');
 const bcrypt = require('bcryptjs');
@@ -55,21 +56,30 @@ usersController.registerUser = async (req, res) => {
         var hash = bcrypt.hashSync(password, salt);
 
         body.password = hash;
-        const user = new Users(body);
-        const result = await user.save();
 
         // console.log(req.body.email);
         console.log('\n\n \n hash - > ', hash);
         const findUser = await User.findOne({ email: req.body.email });
         console.log("\n\n\nEmail exist in database:\n\n\n", findUser);
+        const user = new Users(body);
+        const result = await user.save();
+
         if (findUser) {
             console.log("Email exist in database:", findUser);
-            res.status(404).json({
+            res.status(409).json({
                 success: false,
                 status: "Email already in use, try with another email!",
             });
         }
         else {
+            const token = jsonwebtoken.sign({
+                data: body,
+                role: 'User'
+            }, 'supersecretToken', { expiresIn: '7d' });
+
+            console.log('token -> ', token)
+            res.send({ message: 'Signup successful', token: token });
+
             res.send({
                 message: 'Signup successful'
             });
@@ -77,7 +87,7 @@ usersController.registerUser = async (req, res) => {
 
     }
     catch (ex) {
-        console.log('\n\n\nex', ex.code)
+        console.log('\n\n\nex', ex)
 
         if (ex.code === 11000) {
             res.send({
@@ -182,7 +192,7 @@ usersController.loginUser = async (req, res) => {
             else {
                 console.log('password doesnot match');
 
-                res.status(401).send({ message: 'Wrong Password Entered' });
+                res.status(401).send({ message: 'Wrong Password Entere' });
             }
         }
     } catch (ex) {
